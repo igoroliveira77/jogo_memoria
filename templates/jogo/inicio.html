@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Início - Jogo da Memória
+{% endblock %}
+
+{% block content %}
+
+<div class="inicio">
+
+    <h1>🧠 Jogo da Memória</h1>
+
+    <p>Teste sua memória encontrando todos os pares!</p>
+
+    <div class="menu">
+
+        <a href="{% url 'jogo' %}">
+            <button>▶️ Começar Jogo</button>
+        </a>
+
+        <a href="{% url 'criar_carta' %}">
+            <button>🃏 Cadastrar Carta</button>
+        </a>
+
+        <a href="{% url 'listar_cartas' %}">
+            <button>📋 Ver Cartas</button>
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

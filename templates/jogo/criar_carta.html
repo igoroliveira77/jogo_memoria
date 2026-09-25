@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Cadastrar Carta
+{% endblock %}
+
+{% block content %}
+
+<div class="formulario">
+
+    <h1>🃏 Cadastrar Carta</h1>
+
+    <p>Adicione uma nova carta ao jogo.</p>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">Cadastrar Carta</button>
+
+    </form>
+
+    <a href="{% url 'inicio' %}">
+        <button type="button">Voltar</button>
+    </a>
+
+</div>
+
+{% endblock %}

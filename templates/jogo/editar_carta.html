@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Editar Carta
+{% endblock %}
+
+{% block content %}
+
+<div class="formulario">
+
+    <h1>✏️ Editar Carta</h1>
+
+    <p>Altere os dados da carta.</p>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">Salvar Alterações</button>
+
+    </form>
+
+    <a href="{% url 'listar_cartas' %}">
+        <button type="button">Voltar</button>
+    </a>
+
+</div>
+
+{% endblock %}

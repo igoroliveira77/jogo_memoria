@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Jogo da Memória
+{% endblock %}
+
+{% block content %}
+
+<h1>🧠 Jogo da Memória</h1>
+
+<div class="informacoes-jogo">
+
+    <div>
+        Tentativas
+        <strong id="tentativas">0</strong>
+    </div>
+
+    <div>
+        Tempo
+        <strong><span id="tempo">0</span>s</strong>
+    </div>
+
+    <div>
+        Pontuação
+        <strong id="pontuacao">0</strong>
+    </div>
+
+</div>
+
+<div id="resultado">
+
+    <p id="mensagem-vitoria"></p>
+
+    <a href="{% url 'jogo' %}">
+        <button>🔄 Jogar Novamente</button>
+    </a>
+
+</div>
+
+<div class="tabuleiro">
+
+    {% for carta in cartas %}
+
+        <div class="carta" onclick="virarCarta(this)">
+
+            <div class="frente">
+                <img src="{{ carta.imagem.url }}" alt="{{ carta.nome }}">
+            </div>
+
+            <div class="verso">
+                ❓
+            </div>
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+<script>
+
+let cartasViradas = [];
+
+let tentativas = 0;
+
+let tempo = 0;
+
+let pontuacao = 0;
+
+let paresEncontrados = 0;
+
+let cronometro = setInterval(function() {
+
+    tempo++;
+
+    document.getElementById("tempo").textContent = tempo;
+
+}, 1000);
+
+
+function virarCarta(carta) {
+
+    if (cartasViradas.length >= 2) {
+        return;
+    }
+
+    if (carta.classList.contains("encontrada")) {
+        return;
+    }
+
+    carta.classList.add("virada");
+
+    cartasViradas.push(carta);
+
+    if (cartasViradas.length === 2) {
+
+        tentativas++;
+
+        document.getElementById("tentativas").textContent = tentativas;
+
+        verificarPar();
+
+    }
+
+}
+
+
+function verificarPar() {
+
+    let carta1 = cartasViradas[0];
+
+    let carta2 = cartasViradas[1];
+
+    let imagem1 = carta1.querySelector("img").src;
+
+    let imagem2 = carta2.querySelector("img").src;
+
+
+    if (imagem1 === imagem2) {
+
+        carta1.classList.add("encontrada");
+
+        carta2.classList.add("encontrada");
+
+        cartasViradas = [];
+
+        pontuacao += 100;
+
+        document.getElementById("pontuacao").textContent = pontuacao;
+
+        paresEncontrados++;
+
+
+        if (paresEncontrados === {{ cartas|length }} / 2) {
+
+            clearInterval(cronometro);
+
+            document.getElementById("mensagem-vitoria").textContent =
+                "🎉 Parabéns! Você encontrou todos os pares!";
+
+            document.getElementById("resultado").style.display = "block";
+
+        }
+
+    } else {
+
+    pontuacao -= 20;
+
+    if (pontuacao < 0) {
+        pontuacao = 0;
+    }
+
+    document.getElementById("pontuacao").textContent = pontuacao;
+
+    setTimeout(function() {
+
+        carta1.classList.remove("virada");
+
+        carta2.classList.remove("virada");
+
+        cartasViradas = [];
+
+    }, 1000);
+
+}
+
+}
+
+</script>
+
+{% endblock %}

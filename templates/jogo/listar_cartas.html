@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Cartas - Jogo da Memória
+{% endblock %}
+
+{% block content %}
+
+<div class="lista-cartas">
+
+    <h1>🃏 Cartas cadastradas</h1>
+
+    <a href="{% url 'criar_carta' %}">
+        <button>Cadastrar nova carta</button>
+    </a>
+
+    {% if cartas %}
+
+        <div class="cartas-cadastradas">
+
+            {% for carta in cartas %}
+
+                <div class="carta-cadastrada">
+
+                    <h3>{{ carta.nome }}</h3>
+
+                    <img src="{{ carta.imagem.url }}" alt="{{ carta.nome }}">
+
+                    <div class="acoes">
+
+                        <a href="{% url 'editar_carta' carta.id %}">
+                            <button>Editar</button>
+                        </a>
+
+                        <a href="{% url 'excluir_carta' carta.id %}"
+                        onclick="return confirm('Tem certeza que deseja excluir esta carta?');">
+                            <button>Excluir</button>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <p>Nenhuma carta cadastrada.</p>
+
+    {% endif %}
+
+    <br>
+
+    <a href="{% url 'inicio' %}">
+        <button>Voltar</button>
+    </a>
+
+</div>
+
+{% endblock %}
